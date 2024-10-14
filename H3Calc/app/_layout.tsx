@@ -5,6 +5,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import Calculator from '../components/Calculator';
+import CalculatorOverview from '../components/CalculatorOverview';
+
 
 
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -30,7 +32,7 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-    <Calculator />
+    <CalculatorOverview />
     </ThemeProvider>
   );
 }
