@@ -7,32 +7,22 @@ const Calculator = () => {
   const [firstValue, setFirstValue] = useState(null);
 
   const handleTap = (type, value) => {
-    if (type === 'number') {
-      setDisplayValue(displayValue === '0' ? value : displayValue + value);
-    }
-    if (type === 'operator') {
-      setOperator(value);
-      setFirstValue(parseFloat(displayValue));
-      setDisplayValue('0');
-    }
+
     if (type === 'equal') {
-      const secondValue = parseFloat(displayValue);
-      if (operator === '+') {
-        setDisplayValue((firstValue + secondValue).toString());
-      } else if (operator === '-') {
-        setDisplayValue((firstValue - secondValue).toString());
-      } else if (operator === '*') {
-        setDisplayValue((firstValue * secondValue).toString());
-      } else if (operator === '/') {
-        setDisplayValue((firstValue / secondValue).toString());
-      }
-      setFirstValue(null);
-      setOperator(null);
+
     }
-    if (type === 'clear') {
+    else if (type === 'clear') {
       setDisplayValue('0');
       setFirstValue(null);
       setOperator(null);
+    }
+    else if (type === 'delete') {
+      setDisplayValue(displayValue.slice(0, -1)); // Removes the last character
+      setDisplayValue(displayValue.slice(0, -1) === '' ? '0' : displayValue.slice(0, -1));
+
+    }
+    else{
+      setDisplayValue(displayValue === '0' ? value : displayValue + value);
     }
   };
 
@@ -41,8 +31,8 @@ const Calculator = () => {
       <Text style={styles.display}>{displayValue}</Text>
       <View style={styles.row}>
         <CalculatorButton title="C" onPress={() => handleTap('clear')} />
-        <CalculatorButton title="" onPress={() => handleTap('')} />
-        <CalculatorButton title="" onPress={() => handleTap('')} />
+        <CalculatorButton title="(" onPress={() => handleTap('operator', '(')} />
+        <CalculatorButton title=") " onPress={() => handleTap('operator', ')')} />
         <CalculatorButton title="/" onPress={() => handleTap('operator', '/')} />
       </View>
       <View style={styles.row}>
@@ -64,9 +54,9 @@ const Calculator = () => {
         <CalculatorButton title="+" onPress={() => handleTap('operator', '+')} />
       </View>
       <View style={styles.row}>
-        <CalculatorButton title="" onPress={() => handleTap('')} />
+        <CalculatorButton title="Delete" onPress={() => handleTap('delete')} />
         <CalculatorButton title="0" onPress={() => handleTap('number', '0')} />
-        <CalculatorButton title="," onPress={() => handleTap('')} />
+        <CalculatorButton title="." onPress={() => handleTap('number', '.')} />
         <CalculatorButton title="=" onPress={() => handleTap('equal')} />
       </View>
     </View>

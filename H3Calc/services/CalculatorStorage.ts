@@ -26,4 +26,12 @@ export const localStorageService = {
     const calculators = await this.getCalculators();
     return calculators.find(cal => cal.id === id) || null;
   },
+
+  async updateCalculator(id: string, updatedFields: Partial<Calculator>): Promise<void> {
+    const calculators = await this.getCalculators();
+    const updatedCalculators = calculators.map(calculator =>
+      calculator.id === id ? { ...calculator, ...updatedFields } : calculator
+    );
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedCalculators));
+  },
 };
