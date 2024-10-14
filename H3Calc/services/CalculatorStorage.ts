@@ -1,6 +1,6 @@
 // src/services/localStorage.ts
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Calculator } from '../types/calculator';
+import { Calculator } from '../models/Calculator';
 
 const STORAGE_KEY = 'calculators';
 
@@ -10,10 +10,16 @@ export const localStorageService = {
     return data ? JSON.parse(data) : [];
   },
 
-  async saveCalculator(calculator: Calculator): Promise<void> {
+  async addCalculator(calculator: Calculator): Promise<void> {
     const calculators = await this.getCalculators();
     calculators.push(calculator);
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(calculators));
+  },
+
+  async deleteCalculator(id: string): Promise<void> {
+    const calculators = await this.getCalculators();
+    const updatedCalculators = calculators.filter(calculator => calculator.id !== id);
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedCalculators));
   },
 
   async getCalculatorById(id: string): Promise<Calculator | null> {
