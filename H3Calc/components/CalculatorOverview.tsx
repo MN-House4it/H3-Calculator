@@ -38,9 +38,9 @@ const CalculatorOverview: React.FC<{ navigation: any }> = ({ navigation }) => {
   const renderItem = ({ item }: { item: Calculator }) => (
     <View style={styles.itemContainer}>
       <TouchableOpacity 
-        onPress={() => navigation.navigate('CalculatorDetail', { calculatorId: item.id })}>
+        onPress={() => navigation.navigate('Calculator', { calculatorId: item.id })}>
         <Text style={styles.itemText}>{item.name}</Text>
-        <Text style={styles.itemText}>{item.lastResult}</Text>
+        <Text style={styles.itemText}>Last result: {item.lastResult}</Text>
         <Text style={styles.itemText}>{item.lastOperation}</Text>
       </TouchableOpacity>
       <Button title="Delete" onPress={() => deleteCalculator(item.id)} color="#FF4D4D" />
