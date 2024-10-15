@@ -29,14 +29,27 @@ export default function RootLayout() {
     return null;
   }
 
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <NavigationContainer independent={true}>
-        <Stack.Navigator initialRouteName="CalculatorOverview">
-          <Stack.Screen name="Calculator Overview" component={CalculatorOverview} />
-          <Stack.Screen name="Calculator" component={Calculator} />
-        </Stack.Navigator>  
-      </NavigationContainer>
-    </ThemeProvider>
-  );
+return (
+  <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <NavigationContainer independent={true}>
+      <Stack.Navigator
+        initialRouteName="CalculatorOverview"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#121212', // Dark background for the navbar
+          },
+          headerTintColor:'#fff', // White text/icons in dark mode
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            color: '#fff'
+          },
+        }}
+      >
+        <Stack.Screen name="Calculators" component={CalculatorOverview} />
+        <Stack.Screen name="Calculator" component={Calculator} />
+      </Stack.Navigator>  
+    </NavigationContainer>
+  </ThemeProvider>
+);
+
 }
