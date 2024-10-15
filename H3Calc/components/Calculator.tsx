@@ -1,38 +1,88 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import Toast from 'react-native-toast-message';
+import { useRoute } from '@react-navigation/native';  // Import useRoute to access the route params
+
 
 const Calculator = () => {
   const [displayValue, setDisplayValue] = useState('0');
+
+  const [lastOperation, setLastOperation] = useState('');
   const [operator, setOperator] = useState(null);
   const [firstValue, setFirstValue] = useState(null);
+  const [isLastOperator, setIsLastOperator] = useState(true); // Use state for isLastOperator
 
-  const handleTap = (type, value) => {
+  const route = useRoute(); // Access the route object
+  const { calculatorId } = route.params; // Extract calculatorId from route.params
+  
+  useEffect(() => {
+    // Optionally, you can do something with calculatorId, like loading saved data for this specific calculator
+    console.log('Navigated to Calculator with ID:', calculatorId);
+  }, [calculatorId]);
+
+    // Function to calculate the expression
+    const calculateExpression = (expression: string): number => {
+      try {
+        const sanitizedExpression = expression.replace(/[^-()\d/*+.]/g, ''); // Sanitize input
+        return eval(sanitizedExpression); // Evaluate the expression
+      } catch (error) {
+        console.error('Invalid expression:', error);
+        Toast.show({
+          type: 'error',
+          text1: 'Invalid Expression',
+          text2: 'Please check your input',
+        });
+        return NaN;
+      }
+    };
+
+  const handleTap = (type : string, value: string) => {
 
     if (type === 'equal') {
-
+      const result = calculateExpression(displayValue);
+      setLastOperation(displayValue.toString());
+      setDisplayValue(result.toString()); // Set the result as the new display value
+      if (result === 69 || result === 80085) {
+        Toast.show({
+          type: 'info', // Provide a valid type like 'info'
+          text1: 'Nice!',
+        });
+      }
+      
     }
     else if (type === 'clear') {
+      setLastOperation('');
       setDisplayValue('0');
       setFirstValue(null);
       setOperator(null);
     }
     else if (type === 'delete') {
-      setDisplayValue(displayValue.slice(0, -1)); // Removes the last character
+      setDisplayValue(displayValue.slice(0, -1));
       setDisplayValue(displayValue.slice(0, -1) === '' ? '0' : displayValue.slice(0, -1));
 
     }
     else{
-      setDisplayValue(displayValue === '0' ? value : displayValue + value);
+      if (type === 'operator') {
+        if (!isLastOperator) {
+          setDisplayValue(displayValue === '0' ? value : displayValue + value);
+          setIsLastOperator(true);
+        }
+      }
+      else{
+        setDisplayValue(displayValue === '0' ? value : displayValue + value);
+        setIsLastOperator(false);
+      }
     }
   };
 
   return (
     <View style={styles.container}>
+      <Text style={styles.display}>{lastOperation}</Text>
       <Text style={styles.display}>{displayValue}</Text>
       <View style={styles.row}>
         <CalculatorButton title="C" onPress={() => handleTap('clear')} />
-        <CalculatorButton title="(" onPress={() => handleTap('operator', '(')} />
-        <CalculatorButton title=") " onPress={() => handleTap('operator', ')')} />
+        <CalculatorButton title="(" onPress={() => handleTap('number', '(')} />
+        <CalculatorButton title=") " onPress={() => handleTap('number', ')')} />
         <CalculatorButton title="/" onPress={() => handleTap('operator', '/')} />
       </View>
       <View style={styles.row}>
@@ -59,6 +109,8 @@ const Calculator = () => {
         <CalculatorButton title="." onPress={() => handleTap('number', '.')} />
         <CalculatorButton title="=" onPress={() => handleTap('equal')} />
       </View>
+
+      <Toast />
     </View>
   );
 };
