@@ -6,8 +6,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect, useState } from 'react';
 import { AppState, AppStateStatus, View } from 'react-native';
 import Toast from 'react-native-toast-message';
-import Calculator from '../components/Calculator';
-import CalculatorOverview from '../components/CalculatorOverview';
+import Calculator from '../views/Calculator';
+import CalculatorOverview from '../views/CalculatorOverview';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
