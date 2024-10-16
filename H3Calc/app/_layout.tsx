@@ -3,7 +3,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { AppState, AppStateStatus, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import Calculator from '../components/Calculator';
 import CalculatorOverview from '../components/CalculatorOverview';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -19,37 +21,62 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
+  const [appState, setAppState] = useState<AppStateStatus>(AppState.currentState);
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
+      Toast.show({
+        type: 'success',
+        text1: 'Velkommen',
+      });
     }
   }, [loaded]);
+
+  // Handle app state changes for showing toast
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+      if (appState.match(/inactive|background/) && nextAppState === 'active') {
+        Toast.show({
+          type: 'success',
+          text1: 'Velkommen tilbage',
+        });
+      }
+      setAppState(nextAppState);
+    };
+
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      subscription.remove();
+    };
+  }, [appState]);
 
   if (!loaded) {
     return null;
   }
 
-return (
-  <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-    <NavigationContainer independent={true}>
-      <Stack.Navigator
-        initialRouteName="CalculatorOverview"
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: '#121212', // Dark background for the navbar
-          },
-          headerTintColor:'#fff', // White text/icons in dark mode
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            color: '#fff'
-          },
-        }}
-      >
-        <Stack.Screen name="Calculators" component={CalculatorOverview} />
-        <Stack.Screen name="Calculator" component={Calculator} />
-      </Stack.Navigator>  
-    </NavigationContainer>
-  </ThemeProvider>
-);
-
+  return (
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <NavigationContainer independent={true}>
+        <Stack.Navigator
+          initialRouteName="CalculatorOverview"
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: colorScheme === 'dark' ? '#121212' : '#f5f5f5',
+            },
+            headerTintColor: colorScheme === 'dark' ? '#fff' : '#000',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: colorScheme === 'dark' ? '#fff' : '#000',
+            },
+          }}
+        >
+          <Stack.Screen name="Calculators" component={CalculatorOverview} />
+          <Stack.Screen name="Calculator" component={Calculator} />
+        </Stack.Navigator>
+        <Toast />
+      </NavigationContainer>
+    </ThemeProvider>
+  );
 }
