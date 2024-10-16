@@ -1,10 +1,11 @@
   import React, { useState, useEffect } from 'react';
-  import { StyleSheet, Text, View, TouchableOpacity, useColorScheme } from 'react-native';
+  import { StyleSheet, Text, View, TouchableOpacity, useColorScheme, Button } from 'react-native';
   import Toast from 'react-native-toast-message';
   import { useRoute } from '@react-navigation/native';  
   import { localStorageService } from '../services/CalculatorStorage';
   import { ScrollView } from 'react-native';
   import { Picker } from '@react-native-picker/picker';
+  import Dropdown from '../components/Dropdown';
 
 
 
@@ -17,15 +18,29 @@
     const route = useRoute(); 
     const { calculatorId } = route.params; 
     const [calculator, setCalculator] = useState(null);
+    const [calculators, setCalculators] = useState([]);
+
+
+
 
     const scrollViewLastOperationRef = React.useRef(null);
     const scrollViewMainRef = React.useRef(null);
+
+    const fetchCalculators = async () => {
+      const storedCalculators = await localStorageService.getCalculators();
+      if (storedCalculators) {
+        // Assuming storedCalculators is an array of objects with label and value properties
+        setCalculators(storedCalculators);
+
+      }
+    };
 
 
     useEffect(() => {
       const fetchCalculator = async () => {
         const storedCalculator = await localStorageService.getCalculatorById(calculatorId);
         setCalculator(storedCalculator);
+        fetchCalculators();
       };
 
       fetchCalculator();
@@ -135,6 +150,61 @@
       scrollViewMainRef.current.scrollToEnd({ animated: false });
     };
 
+
+
+
+    const renderPickerItems = () => {
+      const calculatorsToShow = calculators.filter((c) => c.id !== calculator.id);
+      return calculatorsToShow;
+    };
+
+    const insertOtherCalculatorValue = async (item) => {
+
+
+
+  
+      let updatedCalculator = { ...calculator }; // Create a copy to update
+
+      updatedCalculator = { 
+        ...updatedCalculator, 
+        lastTyped: updatedCalculator?.lastTyped === '0' ? item.lastResult : updatedCalculator?.lastTyped + item.lastResult 
+      };
+
+      // updatedCalculator?.lastTyped === '0' && type !== 'comma' ? value : updatedCalculator?.lastTyped + value 
+      setCalculator(updatedCalculator);
+      await localStorageService.updateCalculator(calculatorId, updatedCalculator);
+    };
+
+
+
+
+
+
+
+
+    const [selectValue, setSelectValue] = React.useState("");
+
+    const data = [
+      {
+        id: 1,
+        name: 'user'
+      },
+      {
+        id: 2,
+        name: 'Admin'
+      },
+      {
+        id: 3,
+        name: 'employee'
+      },
+    ];
+  
+    const selected = (item) => {
+    }
+  
+
+
+
     return (
       <View style={styles.container}>
     <View style={styles.displayContainer}>
@@ -171,18 +241,17 @@
       </ScrollView>
     </View>
 
-    {/* ComboBox / Picker Component */}
     <View style={styles.pickerContainer}>
-      <Picker
-        selectedValue={selectedValue} // Add state for selected value
-        onValueChange={(itemValue) => setSelectedValue(itemValue)} // Handle value change
-        style={styles.picker}
+      <Dropdown
+        selectValue={selectValue}
+        data={renderPickerItems()}
+        oneSelect={insertOtherCalculatorValue}
       >
-        <Picker.Item label="Option 1" value="option1" />
-        <Picker.Item label="Option 2" value="option2" />
-        <Picker.Item label="Option 3" value="option3" />
-      </Picker>
+      </Dropdown>
+
     </View>
+
+
 
     <View style={styles.grid}>
       <CalculatorButton title="C" onPress={() => handleTap('clear')} />
@@ -265,6 +334,16 @@
     buttonText: {
       fontSize: 30,
       color: '#ffffff', // White text on buttons for contrast
+    },
+    pickerContainer: {
+      alignItems: 'center',
+
+    },
+    picker: {
+      width: '80%', // Adjust width as needed
+      height: 50, // Adjust height as needed
+      zIndex: 10, // Set a higher z-index
+
     },
   });
 
