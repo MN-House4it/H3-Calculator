@@ -56,10 +56,10 @@ const CalculatorOverview: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       <Modal visible={isModalVisible} transparent={true} animationType="fade">
         <View style={styles.modalContainer}>
-          <View style={[styles.modalContent, { backgroundColor: isDarkMode ? '#2c2c2c' : '#ffffff' }]}>
+          <View style={[styles.modalContent, { backgroundColor: isDarkMode ? '#222' : '#fff' }]}>
             <Text style={[styles.modalTitle, { color: isDarkMode ? '#ffffff' : '#000000' }]}>Edit Calculator Name</Text>
             <TextInput
-              style={[styles.textInput, { backgroundColor: isDarkMode ? '#1e1e1e' : '#f0f0f0', color: isDarkMode ? '#ffffff' : '#000000' }]}
+              style={[styles.textInput, { backgroundColor: isDarkMode ? '#444' : '#f0f0f0', color: isDarkMode ? '#ffffff' : '#000000' }]}
               value={newName}
               onChangeText={(text) => {
                 if (text.length <= 20) setNewName(text);
@@ -68,8 +68,20 @@ const CalculatorOverview: React.FC<{ navigation: any }> = ({ navigation }) => {
               placeholderTextColor={isDarkMode ? '#888' : '#666'}
             />
             <View style={styles.modalButtonCantainer}>
-              <Button title="Cancel" onPress={() => setIsModalVisible(false)} />
-              <Button title="Save" onPress={saveNewName} />
+            <TouchableOpacity 
+    style={styles.cancelButton} 
+    onPress={() => setIsModalVisible(false)}
+>
+    <Text style={styles.cancelButtonText}>Cancel</Text>
+</TouchableOpacity>
+
+<TouchableOpacity 
+    style={styles.saveButton} 
+    onPress={saveNewName}
+>
+    <Text style={styles.saveButtonText}>Save</Text>
+</TouchableOpacity>
+
             </View>
           </View>
         </View>
@@ -154,6 +166,28 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
   },
+  cancelButton: {
+    backgroundColor: '#ff4444', // Red color for the cancel button
+    borderRadius: 5,
+    padding: 10,
+    alignItems: 'center',
+    marginTop: 10,
+},
+cancelButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+},
+saveButton: {
+    backgroundColor: '#2196f3', // Blue color for the save button
+    borderRadius: 5,
+    padding: 10,
+    alignItems: 'center',
+    marginTop: 10,
+},
+saveButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+}
 });
 
 export default CalculatorOverview;
