@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   cancelButton: {
-    backgroundColor: '#ff4444', // Red color for the cancel button
+    backgroundColor: '#ff4444',
     borderRadius: 5,
     padding: 10,
     alignItems: 'center',
@@ -178,7 +178,7 @@ cancelButtonText: {
     fontWeight: 'bold',
 },
 saveButton: {
-    backgroundColor: '#2196f3', // Blue color for the save button
+    backgroundColor: '#2196f3',
     borderRadius: 5,
     padding: 10,
     alignItems: 'center',

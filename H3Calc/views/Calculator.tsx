@@ -47,12 +47,12 @@ const CalculatorView = observer(() => {
 
     const subscription = Dimensions.addEventListener('change', handleResize);
 
-    handleResize(); // Initial call to set button size on mount
+    handleResize();
     scrollViewLastOperationRef.current?.scrollToEnd({ animated: false });
     scrollViewMainRef.current?.scrollToEnd({ animated: false });
 
     return () => {
-      subscription?.remove(); // Clean up the event listener
+      subscription?.remove();
     };
   }, [viewModel.calculator]);
 
@@ -100,8 +100,8 @@ const CalculatorView = observer(() => {
                     key={buttonIndex} 
                     title={button.title} 
                     onPress={() => viewModel.handleTap(button.type, button.value)} 
-                    size={buttonSize} // Pass the dynamic size
-                    isDarkMode={isDarkMode} // Pass isDarkMode to CalculatorButton
+                    size={buttonSize}
+                    isDarkMode={isDarkMode}
                     isHighlighted={button.isHighlighted}
                     highlightColor={button.highlightColor}
                   />

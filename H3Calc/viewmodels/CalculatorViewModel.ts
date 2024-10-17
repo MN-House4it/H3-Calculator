@@ -70,19 +70,11 @@ class CalculatorViewModel {
   }
 
   handleTap = async (type: string, value: string | null) => {
-    //let updatedCalculator = { ...this.calculator };
-
     runInAction(() => {
       if (this.calculator) {
         if (type === 'equal' && this.calculator?.lastTyped) {
           const result = this.calculateExpression(this.calculator?.lastTyped);
           if (!isNaN(result)) {
-            //updatedCalculator = {
-            //  ...updatedCalculator,
-            //  lastResult: result.toString(),
-            //  lastOperation: updatedCalculator?.lastTyped,
-            //  lastTyped: result.toString(),
-            //};
             this.calculator.lastResult = result.toString();
             this.calculator.lastOperation = this.calculator?.lastTyped;
             this.calculator.lastTyped = result.toString();
@@ -95,14 +87,10 @@ class CalculatorViewModel {
             }
           }      
         } else if (type === 'clear') {
-          //updatedCalculator = { ...updatedCalculator, lastResult: '0', lastOperation: '', lastTyped: '0' };
-          //this.calculator = updatedCalculator;
           this.calculator.lastResult = '0';
           this.calculator.lastOperation = '';
           this.calculator.lastTyped = '0';
         } else if (type === 'delete') {
-          //updatedCalculator = { ...updatedCalculator, lastTyped: updatedCalculator?.lastTyped.slice(0, -1) || '0' };
-          //this.calculator = updatedCalculator;
           if (this.calculator) {
             this.calculator.lastTyped = (this.calculator.lastTyped?.slice(0, -1)) || '0';
           }
@@ -112,25 +100,18 @@ class CalculatorViewModel {
             if (this.isLastCharacterOperator(lastTyped)) {
               lastTyped = lastTyped.slice(0, -1);
             }
-            //updatedCalculator = { ...updatedCalculator, lastTyped: lastTyped + value };
-            //this.calculator = updatedCalculator;
+
             this.calculator.lastTyped = lastTyped + value;
           } else if (type !== 'comma' || this.checkCalculation(this.calculator?.lastTyped)) {
             if (type === 'comma' && this.isLastCharacterOperator(this.calculator?.lastTyped)){
               this.calculator.lastTyped = this.calculator?.lastTyped + '0';
             }
-            //updatedCalculator = {
-            //  ...updatedCalculator,
-            //  lastTyped: updatedCalculator?.lastTyped === '0' && type !== 'comma' ? value : updatedCalculator?.lastTyped + value,
-            //};
-            //this.calculator = updatedCalculator;
 
             this.calculator.lastTyped = this.calculator.lastTyped === '0' && type !== 'comma' ? value?.toString() : this.calculator?.lastTyped + value;
           }
         }
 
       } else {
-        // Handle the case when lastTyped is undefined
         console.warn('lastTyped is undefined');
       }
 

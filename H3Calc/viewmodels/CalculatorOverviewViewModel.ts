@@ -3,7 +3,6 @@ import { useState, useCallback } from 'react';
 import { localStorageService } from '../services/CalculatorStorage';
 import { Calculator } from '../models/Calculator';
 import { useFocusEffect } from '@react-navigation/native';
-//import Clipboard from '@react-native-clipboard/clipboard';
 import * as Clipboard from 'expo-clipboard';
 
 
@@ -71,7 +70,6 @@ export const useCalculatorOverviewViewModel = () => {
   };
 
   const copyToClipboard  = async (calculator: Calculator) => {
-    //Clipboard.setString(calculator.lastResult.toString())
     if (calculator.lastResult){
       await Clipboard.setStringAsync(calculator.lastResult.toString());
     }
