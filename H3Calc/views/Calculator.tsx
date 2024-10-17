@@ -7,7 +7,7 @@ import Dropdown from '../components/Dropdown';
 import CalculatorViewModel from '../viewmodels/CalculatorViewModel';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
-const MAX_WIDTH = 600; // Set a max width for the number pad
+
 
 const CalculatorView = observer(() => {
   const colorScheme = useColorScheme();
@@ -19,7 +19,7 @@ const CalculatorView = observer(() => {
 
   const scrollViewLastOperationRef = useRef(null);
   const scrollViewMainRef = useRef(null);
-  const [buttonSize, setButtonSize] = useState(0); // Adjusted from buttonWidth
+  const [buttonSize, setButtonSize] = useState(0);
 
   useEffect(() => {
     const fetchCalculatorData = async () => {
@@ -31,9 +31,16 @@ const CalculatorView = observer(() => {
 
   useEffect(() => {
     const handleResize = () => {
-      const { width } = Dimensions.get('window');
-      const containerWidth = Math.min(width, MAX_WIDTH); // Limit the width to MAX_WIDTH
-      const newButtonSize = (containerWidth / 4) - 15; // 4 columns
+      const { width, height } = Dimensions.get('window');
+      const containerHeight = height - 350; // Offset for the top display, could have ben calculated if i had more time
+
+      const newButtonSizeHeight = (containerHeight / 5) - 15; // 5 rows
+
+      const newButtonSizeWidth = (width / 4) - 15; // 4 columns
+
+      const newButtonSize = Math.min(newButtonSizeHeight, newButtonSizeWidth);
+
+
       setButtonSize(newButtonSize);
     };
 
@@ -116,7 +123,7 @@ const styles = StyleSheet.create({
   container: (isDarkMode) => ({
     flex: 1,
     justifyContent: 'flex-start',
-    backgroundColor: isDarkMode ? '#121212' : '#ffffff', // Dark or light background
+    backgroundColor: isDarkMode ? '#121212' : '#ffffff',
     padding: 10,
   }),
   displayContainer: {
@@ -127,42 +134,42 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     marginBottom: 20,
     fontWeight: 'bold',
-    color: isDarkMode ? '#ffffff' : '#000000', // Text color for main display
+    color: isDarkMode ? '#ffffff' : '#000000',
   }),
   displayLastOperation: (isDarkMode) => ({
     fontSize: 40,
     textAlign: 'right',
     marginBottom: 0,
-    color: isDarkMode ? '#bbbbbb' : '#333333', // Text color for last operation
+    color: isDarkMode ? '#bbbbbb' : '#333333',
   }),
   inputContainer: {
     flex: 1,
     paddingBottom: 20,
-    justifyContent: 'flex-end', // Ensure it takes the remaining space
+    justifyContent: 'flex-end',
+    height: '100%',
   },
   gridContainer: {
     alignSelf: 'center',
     width: '100%',
-    maxWidth: MAX_WIDTH, // Limit the max width for the grid
   },
   grid: {
     flexDirection: 'column',
-    justifyContent: 'flex-end', // Aligns rows at the bottom
+    justifyContent: 'flex-end',
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10, // Adds space between rows
+    justifyContent: 'center',
+    marginBottom: 10,
   },
   button: (isDarkMode) => ({
-    backgroundColor: isDarkMode ? '#333333' : '#eeeeee', // Button background color
+    backgroundColor: isDarkMode ? '#333333' : '#eeeeee',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 5, // Adds space around buttons
+    margin: 5,
   }),
   buttonText: (isDarkMode) => ({
     fontSize: 30,
-    color: isDarkMode ? '#fff' : '#000', // Button text color
+    color: isDarkMode ? '#fff' : '#000',
   }),
   pickerContainer: {
     alignItems: 'flex-end',
