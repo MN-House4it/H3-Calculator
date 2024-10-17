@@ -3,6 +3,8 @@ import { useState, useCallback } from 'react';
 import { localStorageService } from '../services/CalculatorStorage';
 import { Calculator } from '../models/Calculator';
 import { useFocusEffect } from '@react-navigation/native';
+import Clipboard from '@react-native-clipboard/clipboard';
+
 
 export const useCalculatorOverviewViewModel = () => {
   const [calculators, setCalculators] = useState<Calculator[]>([]);
@@ -25,7 +27,7 @@ export const useCalculatorOverviewViewModel = () => {
     const newCalculator: Calculator = {
       id: Date.now().toString(),
       name: "New Calculator",
-      lastResult: 0,
+      lastResult: '0',
       lastOperation: '',
       lastTyped: '0'
     };
@@ -62,6 +64,10 @@ export const useCalculatorOverviewViewModel = () => {
     setIsModalVisible(false);
   };
 
+  const copyToClipboard  = (calculator: Calculator) => {
+    //Clipboard.setString(calculator.lastResult.toString())
+  };
+
   return {
     calculators,
     isModalVisible,
@@ -71,6 +77,7 @@ export const useCalculatorOverviewViewModel = () => {
     deleteCalculator,
     showEditModal,
     saveNewName,
-    setIsModalVisible
+    setIsModalVisible,
+    copyToClipboard
   };
 };

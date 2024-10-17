@@ -48,6 +48,9 @@ class CalculatorViewModel {
   }
 
   checkCalculation(calculation: string): boolean {
+    if (this.isLastCharacterOperator(calculation)){
+      return true;
+    }
     calculation = calculation.trim();
     const match = calculation.match(/([\d.,]+)(?=[^\d.,]|$)/g);
 
@@ -96,6 +99,9 @@ class CalculatorViewModel {
           updatedCalculator = { ...updatedCalculator, lastTyped: lastTyped + value };
           this.calculator = updatedCalculator;
         } else if (type !== 'comma' || this.checkCalculation(updatedCalculator?.lastTyped)) {
+          if (type === 'comma' && this.isLastCharacterOperator(updatedCalculator?.lastTyped)){
+            updatedCalculator.lastTyped = updatedCalculator?.lastTyped + '0';
+          }
           updatedCalculator = {
             ...updatedCalculator,
             lastTyped: updatedCalculator?.lastTyped === '0' && type !== 'comma' ? value : updatedCalculator?.lastTyped + value,
@@ -124,27 +130,38 @@ class CalculatorViewModel {
   };
 
   buttons = [
-    { title: 'C', type: 'clear', value: null },
-    { title: '(', type: 'number', value: '(' },
-    { title: ')', type: 'number', value: ')' },
-    { title: '÷', type: 'operator', value: '÷' },
-    { title: '7', type: 'number', value: '7' },
-    { title: '8', type: 'number', value: '8' },
-    { title: '9', type: 'number', value: '9' },
-    { title: '×', type: 'operator', value: '×' },
-    { title: '4', type: 'number', value: '4' },
-    { title: '5', type: 'number', value: '5' },
-    { title: '6', type: 'number', value: '6' },
-    { title: '-', type: 'operator', value: '-' },
-    { title: '1', type: 'number', value: '1' },
-    { title: '2', type: 'number', value: '2' },
-    { title: '3', type: 'number', value: '3' },
-    { title: '+', type: 'operator', value: '+' },
-    { title: '←', type: 'delete', value: null },
-    { title: '0', type: 'number', value: '0' },
-    { title: '.', type: 'comma', value: '.' },
-    { title: '=', type: 'equal', value: null },
+    [
+      { title: 'C', type: 'clear', value: null },
+      { title: '(', type: 'number', value: '(' },
+      { title: ')', type: 'number', value: ')' },
+      { title: '÷', type: 'operator', value: '÷' },
+    ],
+    [
+      { title: '7', type: 'number', value: '7' },
+      { title: '8', type: 'number', value: '8' },
+      { title: '9', type: 'number', value: '9' },
+      { title: '×', type: 'operator', value: '×' },
+    ],
+    [
+      { title: '4', type: 'number', value: '4' },
+      { title: '5', type: 'number', value: '5' },
+      { title: '6', type: 'number', value: '6' },
+      { title: '-', type: 'operator', value: '-' },
+    ],
+    [
+      { title: '1', type: 'number', value: '1' },
+      { title: '2', type: 'number', value: '2' },
+      { title: '3', type: 'number', value: '3' },
+      { title: '+', type: 'operator', value: '+' },
+    ],
+    [
+      { title: '←', type: 'delete', value: null },
+      { title: '0', type: 'number', value: '0' },
+      { title: '.', type: 'comma', value: '.' },
+      { title: '=', type: 'equal', value: null },
+    ],
   ];
+  
 }
 
 export default CalculatorViewModel;
