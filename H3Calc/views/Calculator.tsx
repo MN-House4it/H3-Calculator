@@ -7,6 +7,7 @@ import Dropdown from '../components/Dropdown';
 import CalculatorViewModel from '../viewmodels/CalculatorViewModel';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
+const MAX_WIDTH = 600; // Set a max width for the number pad
 
 const CalculatorView = observer(() => {
   const colorScheme = useColorScheme();
@@ -31,7 +32,8 @@ const CalculatorView = observer(() => {
   useEffect(() => {
     const handleResize = () => {
       const { width } = Dimensions.get('window');
-      const newButtonSize = (width / 4) - 15; // 4 columns
+      const containerWidth = Math.min(width, MAX_WIDTH); // Limit the width to MAX_WIDTH
+      const newButtonSize = (containerWidth / 4) - 15; // 4 columns
       setButtonSize(newButtonSize);
     };
 
@@ -48,13 +50,13 @@ const CalculatorView = observer(() => {
 
   return (
     <View style={styles.container(isDarkMode)}>
-              <View style={styles.pickerContainer}>
-          <Dropdown
-            selectValue={viewModel.selectValue}
-            data={viewModel.renderPickerItems()}
-            oneSelect={viewModel.insertOtherCalculatorValue}
-          />
-        </View>
+      <View style={styles.pickerContainer}>
+        <Dropdown
+          selectValue={viewModel.selectValue}
+          data={viewModel.renderPickerItems()}
+          oneSelect={viewModel.insertOtherCalculatorValue}
+        />
+      </View>
       <View style={styles.displayContainer}>
         <ScrollView 
           ref={scrollViewLastOperationRef}
@@ -81,22 +83,22 @@ const CalculatorView = observer(() => {
       </View>
 
       <View style={styles.inputContainer}>
-
-
-        <View style={styles.grid}>
-          {viewModel.buttons.map((row, rowIndex) => (
-            <View key={rowIndex} style={styles.row}>
-              {row.map((button, buttonIndex) => (
-                <CalculatorButton 
-                  key={buttonIndex} 
-                  title={button.title} 
-                  onPress={() => viewModel.handleTap(button.type, button.value)} 
-                  size={buttonSize} // Pass the dynamic size
-                  isDarkMode={isDarkMode} // Pass isDarkMode to CalculatorButton
-                />
-              ))}
-            </View>
-          ))}
+        <View style={styles.gridContainer}>
+          <View style={styles.grid}>
+            {viewModel.buttons.map((row, rowIndex) => (
+              <View key={rowIndex} style={styles.row}>
+                {row.map((button, buttonIndex) => (
+                  <CalculatorButton 
+                    key={buttonIndex} 
+                    title={button.title} 
+                    onPress={() => viewModel.handleTap(button.type, button.value)} 
+                    size={buttonSize} // Pass the dynamic size
+                    isDarkMode={isDarkMode} // Pass isDarkMode to CalculatorButton
+                  />
+                ))}
+              </View>
+            ))}
+          </View>
         </View>
       </View>
       <Toast />
@@ -138,6 +140,11 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     justifyContent: 'flex-end', // Ensure it takes the remaining space
   },
+  gridContainer: {
+    alignSelf: 'center',
+    width: '100%',
+    maxWidth: MAX_WIDTH, // Limit the max width for the grid
+  },
   grid: {
     flexDirection: 'column',
     justifyContent: 'flex-end', // Aligns rows at the bottom
@@ -155,7 +162,7 @@ const styles = StyleSheet.create({
   }),
   buttonText: (isDarkMode) => ({
     fontSize: 30,
-    color: isDarkMode ? '#ffffff' : '#000000', // Button text color
+    color: isDarkMode ? '#fff' : '#000', // Button text color
   }),
   pickerContainer: {
     alignItems: 'flex-end',
