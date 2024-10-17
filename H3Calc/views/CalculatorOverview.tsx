@@ -48,6 +48,7 @@ const CalculatorOverview: React.FC<{ navigation: any }> = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         style={styles.list}
+        showsVerticalScrollIndicator={false}
       />
 
       <TouchableOpacity style={styles.addButton} onPress={() => addCalculator(navigation)}>
@@ -69,19 +70,18 @@ const CalculatorOverview: React.FC<{ navigation: any }> = ({ navigation }) => {
             />
             <View style={styles.modalButtonCantainer}>
             <TouchableOpacity 
-    style={styles.cancelButton} 
-    onPress={() => setIsModalVisible(false)}
->
-    <Text style={styles.cancelButtonText}>Cancel</Text>
-</TouchableOpacity>
+              style={styles.cancelButton} 
+              onPress={() => setIsModalVisible(false)}
+            >
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
 
-<TouchableOpacity 
-    style={styles.saveButton} 
-    onPress={saveNewName}
->
-    <Text style={styles.saveButtonText}>Save</Text>
-</TouchableOpacity>
-
+            <TouchableOpacity 
+                style={styles.saveButton} 
+                onPress={saveNewName}
+            >
+              <Text style={styles.saveButtonText}>Save</Text>
+            </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -154,9 +154,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 30,
     right: 30,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 70,
+    height: 70,
+    borderRadius: '50%',
     backgroundColor: '#2196f3',
     justifyContent: 'center',
     alignItems: 'center',

@@ -39,7 +39,7 @@ const Dropdown = ({ data, selectValue, oneSelect }) => {
             >
                 <View style={styles.modalOverlay(isDarkMode)}>
                     <View style={styles.modalContent(isDarkMode)}>
-                        <ScrollView style={styles.openDropDown}>
+                        <ScrollView style={styles.openDropDown} showsVerticalScrollIndicator={false} >
                             {data.map((val, i) => (
                                 <TouchableOpacity
                                     key={i}
