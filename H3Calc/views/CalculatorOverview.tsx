@@ -19,9 +19,9 @@ const CalculatorOverview: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const renderItem = ({ item }: { item: any }) => (
     <View style={styles.itemContainer}>
-      <TouchableOpacity onPress={() => navigation.navigate('Calculator', { calculatorId: item.id })}>
+      <TouchableOpacity onPress={() => navigation.navigate('Calculator', { calculatorId: item.id, calculatorName: item.name })}>
         <Text style={styles.itemText}>{item.name}</Text>
-        <Text style={styles.itemText}>Last result: {item.lastResult}</Text>
+        <Text style={styles.itemText}>Last result: {item.lastResult.substring(0, 20)}</Text>
       </TouchableOpacity>
       <View style={styles.iconContainer}>
         <TouchableOpacity style={styles.iconButton} onPress={() => showEditModal(item)}>
@@ -58,7 +58,7 @@ const CalculatorOverview: React.FC<{ navigation: any }> = ({ navigation }) => {
               style={styles.textInput}
               value={newName}
               onChangeText={(text) => {
-                if (text.length <= 30) setNewName(text);
+                if (text.length <= 20) setNewName(text);
               }}
               placeholder="Enter new name"
             />
@@ -105,8 +105,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   iconButton: {
-    marginLeft: 15,
-    padding: 8,
+    marginLeft: 2,
+    padding: 5,
     color: '#ffffff', // Icon button text color
   },
   modalContainer: {

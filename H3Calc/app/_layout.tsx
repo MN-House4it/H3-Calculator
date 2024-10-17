@@ -73,7 +73,12 @@ export default function RootLayout() {
           }}
         >
           <Stack.Screen name="Calculators" component={CalculatorOverview} />
-          <Stack.Screen name="Calculator" component={Calculator} />
+          <Stack.Screen 
+            name="Calculator" 
+            component={Calculator} 
+            options={({ route }) => ({
+              title: route.params?.calculatorName || 'Calculator',
+          })}/>
         </Stack.Navigator>
         <Toast />
       </NavigationContainer>
