@@ -46,7 +46,9 @@ export const useCalculatorOverviewViewModel = () => {
 
   const showEditModal = (calculator: Calculator) => {
     setCurrentCalculator(calculator);
-    setNewName(calculator.name);
+    if (calculator.name){
+      setNewName(calculator.name);
+    }
     setIsModalVisible(true);
   };
 
@@ -60,7 +62,9 @@ export const useCalculatorOverviewViewModel = () => {
       });
 
       setCalculators(updatedCalculators);
-      await localStorageService.updateCalculator(currentCalculator.id, { name: newName });
+      if (currentCalculator.id){
+        await localStorageService.updateCalculator(currentCalculator.id, { name: newName });
+      }
     }
 
     setIsModalVisible(false);
@@ -68,7 +72,10 @@ export const useCalculatorOverviewViewModel = () => {
 
   const copyToClipboard  = async (calculator: Calculator) => {
     //Clipboard.setString(calculator.lastResult.toString())
-    await Clipboard.setStringAsync(calculator.lastResult.toString());
+    if (calculator.lastResult){
+      await Clipboard.setStringAsync(calculator.lastResult.toString());
+    }
+    
   };
 
   return {

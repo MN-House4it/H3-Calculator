@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Dimensions, ViewStyle } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useRoute } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
 import Dropdown from '../components/Dropdown';
 import CalculatorViewModel from '../viewmodels/CalculatorViewModel';
 import { useColorScheme } from '@/hooks/useColorScheme';
+
 
 
 
@@ -122,7 +123,7 @@ const CalculatorButton = ({ title, onPress, size, isDarkMode, isHighlighted, hig
 );
 
 const styles = StyleSheet.create({
-  container: (isDarkMode) => ({
+  container: (isDarkMode: boolean) => ({
     flex: 1,
     justifyContent: 'flex-start',
     backgroundColor: isDarkMode ? '#121212' : '#ffffff',
@@ -131,14 +132,14 @@ const styles = StyleSheet.create({
   displayContainer: {
     marginBottom: 10,
   },
-  displayMain: (isDarkMode) => ({
+  displayMain: (isDarkMode: boolean) => ({
     fontSize: 70,
     textAlign: 'right',
     marginBottom: 20,
     fontWeight: 'bold',
     color: isDarkMode ? '#ffffff' : '#000000',
   }),
-  displayLastOperation: (isDarkMode) => ({
+  displayLastOperation: (isDarkMode: boolean) => ({
     fontSize: 40,
     textAlign: 'right',
     marginBottom: 0,
@@ -163,13 +164,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 10,
   },
-  button: (isDarkMode, isHighlighted, highlightColor) => ({
+  button: (isDarkMode: boolean, isHighlighted: boolean, highlightColor: string) => ({
     backgroundColor: isHighlighted ? highlightColor : isDarkMode ? '#333333' : '#eeeeee',    
     justifyContent: 'center',
     alignItems: 'center',
     margin: 5,
   }),
-  buttonText: (isDarkMode, isHighlighted) => ({
+  buttonText: (isDarkMode: boolean, isHighlighted: boolean) => ({
     fontSize: 30,
     color: isHighlighted ? '#fff' : isDarkMode ? '#fff' : '#000',
   }),
