@@ -101,6 +101,8 @@ const CalculatorView = observer(() => {
                     onPress={() => viewModel.handleTap(button.type, button.value)} 
                     size={buttonSize} // Pass the dynamic size
                     isDarkMode={isDarkMode} // Pass isDarkMode to CalculatorButton
+                    isHighlighted={button.isHighlighted}
+                    highlightColor={button.highlightColor}
                   />
                 ))}
               </View>
@@ -113,9 +115,9 @@ const CalculatorView = observer(() => {
   );
 });
 
-const CalculatorButton = ({ title, onPress, size, isDarkMode }) => (
-  <TouchableOpacity style={[styles.button(isDarkMode), { width: size, height: size, borderRadius: size / 2 }]} onPress={onPress}>
-    <Text style={styles.buttonText(isDarkMode)}>{title}</Text>
+const CalculatorButton = ({ title, onPress, size, isDarkMode, isHighlighted, highlightColor }) => (
+  <TouchableOpacity style={[styles.button(isDarkMode, isHighlighted, highlightColor), { width: size, height: size, borderRadius: size / 2 }]} onPress={onPress}>
+    <Text style={styles.buttonText(isDarkMode, isHighlighted)}>{title}</Text>
   </TouchableOpacity>
 );
 
@@ -161,15 +163,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 10,
   },
-  button: (isDarkMode) => ({
-    backgroundColor: isDarkMode ? '#333333' : '#eeeeee',
+  button: (isDarkMode, isHighlighted, highlightColor) => ({
+    backgroundColor: isHighlighted ? highlightColor : isDarkMode ? '#333333' : '#eeeeee',    
     justifyContent: 'center',
     alignItems: 'center',
     margin: 5,
   }),
-  buttonText: (isDarkMode) => ({
+  buttonText: (isDarkMode, isHighlighted) => ({
     fontSize: 30,
-    color: isDarkMode ? '#fff' : '#000',
+    color: isHighlighted ? '#fff' : isDarkMode ? '#fff' : '#000',
   }),
   pickerContainer: {
     alignItems: 'flex-end',

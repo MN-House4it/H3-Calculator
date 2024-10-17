@@ -1,6 +1,8 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { localStorageService } from '../services/CalculatorStorage';
 import Toast from 'react-native-toast-message';
+import { useColorScheme } from '@/hooks/useColorScheme';
+
 
 class CalculatorViewModel {
   calculator = null;
@@ -129,36 +131,38 @@ class CalculatorViewModel {
     }
   };
 
+
+
   buttons = [
     [
-      { title: 'C', type: 'clear', value: null },
-      { title: '(', type: 'number', value: '(' },
-      { title: ')', type: 'number', value: ')' },
-      { title: '÷', type: 'operator', value: '÷' },
+      { title: 'C', type: 'clear', value: null, isHighlighted: true, highlightColor: '#808080' },
+      { title: '(', type: 'number', value: '(', isHighlighted: true, highlightColor: '#808080' },
+      { title: ')', type: 'number', value: ')', isHighlighted: true, highlightColor: '#808080'},
+      { title: '÷', type: 'operator', value: '÷', isHighlighted: true, highlightColor: '#2196f3' },
     ],
     [
       { title: '7', type: 'number', value: '7' },
       { title: '8', type: 'number', value: '8' },
       { title: '9', type: 'number', value: '9' },
-      { title: '×', type: 'operator', value: '×' },
+      { title: '×', type: 'operator', value: '×', isHighlighted: true, highlightColor: '#2196f3' },
     ],
     [
       { title: '4', type: 'number', value: '4' },
       { title: '5', type: 'number', value: '5' },
       { title: '6', type: 'number', value: '6' },
-      { title: '-', type: 'operator', value: '-' },
+      { title: '-', type: 'operator', value: '-', isHighlighted: true, highlightColor: '#2196f3' },
     ],
     [
       { title: '1', type: 'number', value: '1' },
       { title: '2', type: 'number', value: '2' },
       { title: '3', type: 'number', value: '3' },
-      { title: '+', type: 'operator', value: '+' },
+      { title: '+', type: 'operator', value: '+', isHighlighted: true, highlightColor: '#2196f3' },
     ],
     [
       { title: '←', type: 'delete', value: null },
       { title: '0', type: 'number', value: '0' },
       { title: '.', type: 'comma', value: '.' },
-      { title: '=', type: 'equal', value: null },
+      { title: '=', type: 'equal', value: null, isHighlighted: true, highlightColor: '#2196f3' },
     ],
   ];
   
